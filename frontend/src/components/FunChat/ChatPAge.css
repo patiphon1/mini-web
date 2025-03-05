@@ -1,0 +1,308 @@
+/* frontend/src/App.css */
+
+/* General Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f0f2f5; 
+    color: #1c1e21; 
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Chat Page */
+  .chat-page {
+    display: flex;
+    height: calc(100vh - 60px); 
+    width: 100%;
+  }
+  
+  /* Chat Sidebar */
+  .chat-sidebar {
+    width: 250px;
+    border-right: 1px solid #ddd; 
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #fff; 
+  }
+  
+  .chat-sidebar h2 {
+    color: #0078ff; 
+    margin-bottom: 15px;
+  }
+  
+  .chat-sidebar button {
+    background-color: #0078ff; 
+    color: #fff; 
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .chat-sidebar button:hover {
+    background-color: #005cbf; 
+  }
+  
+  /* Chat List */
+  .chat-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .chat-list li {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .user-chat{
+    width: 100%;
+}
+.chat-list .delete-button {
+    background: none; 
+    border: none; 
+    color: #999;
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: color 0.3s ease; 
+}
+  
+.chat-list .delete-button:hover {
+    background: none; 
+    color: #ff0000; 
+}
+  
+  .chat-list li:hover {
+    background-color: #f0f0f0; 
+  }
+  
+  /* Chat Content */
+  .chat-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 20px;
+    width: 60%;
+    margin: 0 auto;
+  }
+  
+  .chat-content > *:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  
+  /* Chat Window */
+  .chat-window {
+    width: 100%;
+  }
+  
+  .chat-window .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #0078ff; 
+    color: #fff; 
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0; 
+    margin-bottom: 20px;
+  }
+  
+  .chat-window .chat-header h2 {
+      margin: 0;
+  }
+  .chat-window .chat-header button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+  }
+  
+  .chat-window .messages {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  .chat-window .message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    max-width: 70%;
+    border-radius: 15px; 
+    padding: 10px 15px; 
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .chat-window .sent {
+    /* background-color: #daebf3; ชื่อพื้นหลังแชท */
+    align-self: flex-end;
+  }
+  
+  .chat-window .received {
+    background-color: #fff; 
+    align-self: flex-start;
+  }
+  
+  .chat-window .message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .chat-window .message-sender {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  
+  .chat-window .profile-picture-message {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  
+  .message-time {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  /* Input Field */
+  .chat-window form {
+    display: flex;
+    width: 100%;
+  }
+  
+  .chat-window input[type="text"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px; 
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+  }
+  
+  .chat-window button[type="submit"] {
+    background-color: #0078ff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .chat-window button[type="submit"]:hover {
+      background-color: #005cbf;
+  }
+  
+  /* Search User */
+  .search-user {
+    width: 100%;
+  }
+  
+  .search-user h2{
+      margin-bottom: 10px;
+  }
+  
+  .search-user input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px; 
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+  
+  .search-user button {
+    background-color: #0078ff; 
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .search-user button:hover {
+    background-color: #005cbf; 
+  }
+  
+  .search-user ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .search-user li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+  
+  .search-user li:hover{
+      background-color: #f0f0f0;
+  }
+  .image-upload-button {
+    background-color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    color: #0078ff; 
+    font-size: 20px; 
+    transition: color 0.3s ease;
+  }
+
+  .image-upload-button:hover {
+    color: #005cbf;
+  }
+  .uploaded-image {
+    max-width: 250px; 
+    max-height: 250px; 
+    width: auto;  
+    height: auto; 
+    border-radius: 8px;
+    margin-top: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  .image-preview-container {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .image-preview {
+    max-width: 250px; 
+    max-height: 250px; 
+    width: auto; 
+    height: auto;
+    border: 1px solid #ccc;
+    object-fit: contain; 
+  }
+  
+  .image-preview-container:hover .image-preview {
+    border: 1px solid #0078ff; 
+  }

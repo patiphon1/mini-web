@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+/* Variables */
+:root {
+  --primary: hsl(213deg 85% 97%);
+  --secondary: hsl(233deg 36% 38%);
+  --dark: hsl(218deg 50% 91%);
+}
+
+
+* {
+  font-family: "Roboto Mono", serif;
+}
+
+.body-login {
+  user-select: none;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: hsl(219, 64%, 65%);
+  height: 100vh;
+}
+
+
+.screen-1 {
+  background: var(--primary);
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  border-radius: 30px;
+  box-shadow: 0 0 0.50em hsl(231deg 62% 94%);
+  gap: 2em;
+}
+
+
+.forgot-password-link {
+  margin-bottom: 2em;
+  margin-left: 18px;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+
+.input-btn {
+  width: 400px;
+  padding: 1em;
+  border: none;
+  border-radius: 10px;
+  color: #000000;
+  margin-bottom: 3px;
+}
+
+
+label {
+  margin-bottom: 1em;
+}
+
+
+.input-btn-submit {
+  width: 400px;
+  padding: 1em;
+  border: none;
+  border-radius: 10px;
+  color: #000000;
+  background: white;
+  border: solid 1px #000000;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+.input-btn-submit:hover {
+  background: hsl(219, 53%, 39%);
+  color: white;
+}
+/* register Page */
+.body-register{
+	user-select: none;
+	overflow-y: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: hsl(219, 64%, 65%);
+	height: 100vh;
+}
