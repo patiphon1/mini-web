@@ -7,9 +7,10 @@ import { io } from 'socket.io-client'; // นำเข้า Socket.IO client
 
 function ChatWindow({ chat, setChat }) {
   const [messageText, setMessageText] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [previousImage, setPreviousImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null); // สร้าง state สำหรับแสดงตัวอย่างรูปภาพ
+  const [selectedFile, setSelectedFile] = useState(null); //เปลี่ยนชื่อ
+  const [previousFile, setPreviousFile] = useState(null); //เปลี่ยนชื่อ
+  const [filePreview, setFilePreview] = useState(null); //เปลี่ยนชื่อ
+  const [canSendMessage, setCanSendMessage] = useState(false); // New state
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('user');
   const navigate = useNavigate();
@@ -37,22 +38,29 @@ function ChatWindow({ chat, setChat }) {
     };
   }, [chat._id, setChat]);
 
+  useEffect(() => {
+    // ตรวจสอบว่าสามารถส่งข้อความได้หรือไม่
+    setCanSendMessage(messageText.trim().length > 0);
+  }, [messageText]);
+
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    // ตรวจสอบว่าข้อความว่างเปล่าหรือไม่มีรูปภาพ
-    if (!messageText.trim() && !selectedImage && !previousImage) {
+    // ตรวจสอบว่าสามารถส่งข้อความได้หรือไม่
+    if (!canSendMessage && !selectedFile && !previousFile) {
       console.log("ไม่สามารถส่งข้อความว่างได้");
       return;
     }
 
-    let imageToSend = selectedImage || previousImage;
+     let fileToSend = selectedFile || previousFile; //เปลี่ยนชื่อ
     try {
       const formData = new FormData();
       formData.append('chatId', chat._id);
-      formData.append('text', messageText);
-      if (imageToSend) {
-        formData.append('image', imageToSend);
+      if (messageText.trim()) {
+        formData.append('text', messageText);
+      }
+      if (fileToSend) {
+        formData.append('file', fileToSend);
       }
 
       const res = await axios.post(
@@ -67,11 +75,11 @@ function ChatWindow({ chat, setChat }) {
       );
       setMessageText('');
       // ตั้งค่ารูปภาพก่อนหน้าเมื่อส่งสำเร็จ
-      if (selectedImage) {
-        setPreviousImage(selectedImage);
-      }
-      setSelectedImage(null);
-      setImagePreview(null); // ล้างตัวอย่างรูปหลังจากส่ง
+       if (selectedFile) {
+        setPreviousFile(selectedFile);
+       }
+      setSelectedFile(null);
+      setFilePreview(null); // ล้างตัวอย่างรูปหลังจากส่ง
       // อัปเดตสถานะแชท
       setChat((prevChat) => ({
         ...prevChat,
@@ -89,37 +97,44 @@ function ChatWindow({ chat, setChat }) {
     navigate(`/chat/new`);
   };
 
-  const handleImageChange = (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
-    setPreviousImage(null);
-
+    setSelectedFile(file);
+    setPreviousFile(null);
+     setMessageText('');// Clear messageText when a new image is selected
     // สร้างตัวอย่างรูปภาพ
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setFilePreview(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
-      setImagePreview(null);
+      setFilePreview(null);
     }
   };
 
-  const handleImageClick = () => {
+  const handleFileClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleResendPreviousImage = () => {
+    const handleTextChange = (event) => {
+    setMessageText(event.target.value);
+    setPreviousFile(null); // Clear previousImage when text is entered
+    setSelectedFile(null)
+    setFilePreview(null)
+    };
+
+  const handleResendPreviousFile = () => { //เปลี่ยนชื่อ
     // หากผู้ใช้ต้องการส่งรูปซ้ำโดยไม่มีข้อความ
-    if (previousImage) {
+    if (previousFile) { //เปลี่ยนชื่อ
       sendMessage(new Event('submit'));
     }
   };
 
-  const handleClearPreview = () => {
-    setSelectedImage(null);
-    setImagePreview(null);
+  const handleClearPreview = () => { //เปลี่ยนชื่อ
+    setSelectedFile(null); //เปลี่ยนชื่อ
+    setFilePreview(null); //เปลี่ยนชื่อ
     fileInputRef.current.value = ""; // รีเซ็ตค่า input file
   };
 
@@ -166,6 +181,12 @@ function ChatWindow({ chat, setChat }) {
               <div className="message-content">
                 {msg.text && <p>{msg.text}</p>}
                 {msg.imageUrl && <img src={`http://localhost:5000${msg.imageUrl}`} alt="Uploaded" className="uploaded-image" />}
+                 {msg.videoUrl && (
+                  <video controls className="uploaded-video">
+                    <source src={`http://localhost:5000${msg.videoUrl}`} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
               </div>
               <div className='message-time'>
                 {moment(msg.createdAt).format('HH:mm')}
@@ -176,19 +197,23 @@ function ChatWindow({ chat, setChat }) {
       </div>
       <form onSubmit={sendMessage}>
         {/* พื้นที่แสดงตัวอย่างรูปภาพ */}
-        {imagePreview && (
+        {filePreview && (
           <div className="image-preview-container">
-            <img src={imagePreview} alt="Preview" className="image-preview" />
+              {selectedFile.type.startsWith('image/') ? (
+              <img src={filePreview} alt="Preview" className="image-preview" />
+            ) : (
+              <video src={filePreview} alt="Preview" className="image-preview" controls />
+            )}
             <button type="button" onClick={handleClearPreview}>ล้าง</button>
           </div>
         )}
-        <input type="text" value={messageText} onChange={(e) => setMessageText(e.target.value)} />
-        <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} style={{ display: "none" }} />
-        <button type="button" onClick={handleImageClick} className="image-upload-button">
+        <input type="text" value={messageText} onChange={handleTextChange} />
+        <input type="file" accept="image/*,video/*" onChange={handleFileChange} ref={fileInputRef} style={{ display: "none" }} />
+        <button type="button" onClick={handleFileClick} className="image-upload-button">
           <FaImage />
         </button>
-        <button type='button' onClick={handleResendPreviousImage} disabled={!previousImage}></button>
-        <button type="submit">ส่ง</button>
+        <button type='button' onClick={handleResendPreviousFile} disabled={!previousFile}></button>
+        <button type="submit" disabled={!canSendMessage && !selectedFile && !previousFile}>ส่ง</button> {/* Changed */}
       </form>
     </div>
   );

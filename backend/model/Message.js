@@ -18,6 +18,9 @@ const messageSchema = new mongoose.Schema({
   imageUrl: {
     type: String
   },
+  videoUrl: { // Add the videoUrl
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now

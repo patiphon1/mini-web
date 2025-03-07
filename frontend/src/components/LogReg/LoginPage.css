@@ -11,6 +11,11 @@
 * {
   font-family: "Roboto Mono", serif;
 }
+h3{
+  text-align: center;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+}
 
 .body-login {
   user-select: none;
@@ -57,8 +62,17 @@ h1 {
 
 label {
   margin-bottom: 1em;
+  font-weight: bold;
 }
 
+input{
+  width: 100%;
+  padding: 1em;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 3px;
+  border: #000000 solid 1px;
+}
 
 .input-btn-submit {
   width: 400px;
@@ -86,3 +100,4 @@ label {
 	background: hsl(219, 64%, 65%);
 	height: 100vh;
 }
+

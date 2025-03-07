@@ -20,36 +20,41 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // POST send a new message
-router.post('/', auth, upload.single('image'), async (req, res) => {
+router.post('/', auth, upload.single('file'), async (req, res) => {
   try {
     const { chatId, text } = req.body;
     const userId = req.user;
 
-    let imageUrl = null;
-    if (req.file) {
-      imageUrl = `/uploads/${req.file.filename}`; // Image URL
-    }
-
-    const newMessage = new Message({
+    const messageData = {
       chat: chatId,
       sender: userId,
-      text,
-      imageUrl // เก็บร๔ป
-    });
+    };
+    if (text) {
+      messageData.text = text;
+    }
 
-    await newMessage.save();
+    if (req.file) {
+      const fileType = req.file.mimetype.split('/')[0];
+      if (fileType === 'image') {
+        messageData.imageUrl = `/uploads/${req.file.filename}`;
+      } else if (fileType === 'video') {
+        messageData.videoUrl = `/uploads/${req.file.filename}`;
+      }
+    }
+    const message = new Message(messageData);
+    await message.save();
 
-    // อัพเดทแชท
+    // Update chat
     const chat = await Chat.findById(chatId);
     if (!chat) return res.status(404).json({ message: "Chat not found" });
 
-    chat.messages.push(newMessage._id);
-    chat.updatedAt = new Date(); // อัพเวลา
+    chat.messages.push(message._id);
+    chat.updatedAt = new Date();
     await chat.save();
 
-    await newMessage.populate('sender', 'username profilePicture');
+    await message.populate('sender', 'username profilePicture');
 
-    res.status(201).json(newMessage);
+    res.status(201).json(message);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
